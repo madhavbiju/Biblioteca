@@ -21,7 +21,6 @@ class _SignUpPageState extends State<SignUpPage> {
   final secondNameEditingController = new TextEditingController();
   final emailEditingController = new TextEditingController();
   final passwordEditingController = new TextEditingController();
-  final fssaiController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -84,16 +83,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 },
                 onSaved: (value) {
                   secondNameEditingController.text = value!;
-                },
-              ),
-              TextFormField(
-                controller: fssaiController,
-                decoration: InputDecoration(labelText: "FSSAI Number"),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "Please enter your FSSAI number";
-                  }
-                  return null;
                 },
               ),
               Padding(
@@ -183,7 +172,6 @@ class _SignUpPageState extends State<SignUpPage> {
     userModel.uid = user.uid;
     userModel.firstName = firstNameEditingController.text;
     userModel.secondName = secondNameEditingController.text;
-    userModel.fssai = fssaiController.text;
     userModel.isVerified = false;
 
     await firebaseFirestore
