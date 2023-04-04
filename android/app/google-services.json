@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "657524678454",
+    "project_id": "biblioteca-43460",
+    "storage_bucket": "biblioteca-43460.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657524678454:android:3ee4f72d0ac09c57d39d97",
+        "android_client_info": {
+          "package_name": "com.alex.biblioteca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657524678454-3b7bis0b6mighkpuga7r1kb30ieb1ucp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMihuf1LKAvt0zR6mqhJE1SWeu8duXINM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657524678454-3b7bis0b6mighkpuga7r1kb30ieb1ucp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
