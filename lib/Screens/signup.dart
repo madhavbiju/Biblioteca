@@ -25,7 +25,46 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
+      body: Stack(
+        children: <Widget>[
+          // Background Image
+          Image.asset(
+            'assets/background.png', // Replace with your desired background image
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                color: Colors.white.withOpacity(0.7), // set opacity here
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Image.asset(
+                      'assets/logo.png',
+                      height: 100, // Set the height of the logo image
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                  ),
+      
+      Form(
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.all(32.0),
@@ -107,11 +146,17 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   );
                 },
-                child: Text('Already has an account? Login'),
-              )
-            ],
+                child: Text('Already have an account? Login'),
+              ),
+                      ],
+                    ),
+                  ),
+      ),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

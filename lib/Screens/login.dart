@@ -82,41 +82,77 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextFormField(
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your email';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Email',
+      body: Stack(
+        children: <Widget>[
+          // Background Image
+          Image.asset(
+            'assets/background.png', // Replace with your desired background image
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.0),
+                color: Colors.white.withOpacity(0.7), // set opacity here
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
-                ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Password',
+                ],
+              ),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Image.asset(
+                      'assets/logo.png',
+                      height: 100, // Set the height of the logo image
+                    ),
                   ),
-                ),
-                SizedBox(
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            prefixIcon: Icon(Icons.email),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            prefixIcon: Icon(Icons.lock),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
                   height: 20.0,
                 ),
                 _isLoading
@@ -155,11 +191,15 @@ class _SignInPageState extends State<SignInPage> {
                     );
                   },
                   child: Text('Sign up'),
-                ),
-              ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
