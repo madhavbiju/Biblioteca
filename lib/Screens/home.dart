@@ -1,11 +1,17 @@
 import 'dart:ui';
+import 'package:biblioteca/Screens/profile.dart';
+import 'package:biblioteca/Screens/qr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,6 +30,13 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+         _logout();
+        },
+        label: const Text('Log Out'),
+        icon: const Icon(Icons.account_circle_outlined),
+      ),
       body: Stack(
         children: <Widget>[
           // Background Image
@@ -34,9 +47,7 @@ class _HomePageState extends State<HomePage> {
         height: double.infinity,
       ),
           Center(
-            
             child: Container(
-              
               margin: EdgeInsets.symmetric(horizontal: 16.0),
               padding: EdgeInsets.all(16.0),
               decoration: BoxDecoration(
@@ -94,10 +105,21 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 20.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(150, 50),
+                      minimumSize: Size(140, 50),
                     ),
                     onPressed: () {},
                     child: const Text('Search'),
+                  ),
+                  SizedBox(width: 16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(140, 50),
+                    ),
+                    onPressed: () {
+                      Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ScanPage()));
+                    },
+                    child: const Text('Scan'),
                   ),
                 ],
               ),
@@ -106,5 +128,15 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+  void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('email');
+    prefs.remove('password');
+
+    FirebaseAuth.instance.signOut();
+
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
   }
 }

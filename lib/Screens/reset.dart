@@ -1,3 +1,4 @@
+import 'package:biblioteca/Screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -39,7 +40,15 @@ class _ResetScreenState extends State<ResetScreen> {
                   child: Text('Send Reset Link'),
                   onPressed: () {
                     auth.sendPasswordResetEmail(email: _email);
-                    Navigator.of(context).pop();
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) =>
+                            SignInPage(),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                    );
                   },
                 ),
       

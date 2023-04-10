@@ -3,7 +3,6 @@ class UserModel {
   String? email;
   String? firstName;
   String? secondName;
-  String? fssai;
   bool? isVerified;
 
   UserModel(
@@ -11,7 +10,6 @@ class UserModel {
       this.email,
       this.firstName,
       this.secondName,
-      this.fssai,
       this.isVerified});
 
   // receiving data from server
@@ -21,7 +19,6 @@ class UserModel {
         email: map['email'],
         firstName: map['firstName'],
         secondName: map['secondName'],
-        fssai: map['fssai'],
         isVerified: map['isVerified']);
   }
 
@@ -32,7 +29,6 @@ class UserModel {
       'email': email,
       'firstName': firstName,
       'secondName': secondName,
-      'fssai': fssai,
       'isVerified': isVerified,
     };
   }
