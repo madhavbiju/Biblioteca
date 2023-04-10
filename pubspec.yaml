@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.5.0
   fluttertoast: ^8.2.1
   qr_code_scanner: ^1.0.1
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/CN.PNG
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

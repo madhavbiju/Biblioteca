@@ -1,15 +1,8 @@
-import 'dart:ui';
-import 'package:biblioteca/Screens/profile.dart';
 import 'package:biblioteca/Screens/qr.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:biblioteca/Screens/result.dart';
 
 import 'login.dart';
 
@@ -19,13 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _locationController = TextEditingController();
-  TextEditingController _quantityController = TextEditingController();
-  TextEditingController _dateTimeController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  TextEditingController _menuController = TextEditingController();
-  late DateTime selectedDateTime;
-  final _formKey = GlobalKey<FormState>();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _authorController = TextEditingController();
+  TextEditingController _editionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: _locationController,
+                      controller: _titleController,
                       decoration: const InputDecoration(
                         labelText: "Title of the Book",
                         focusedBorder: OutlineInputBorder(),
@@ -85,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: _quantityController,
+                      controller: _authorController,
                       decoration: const InputDecoration(
                         labelText: "Author",
                         focusedBorder: OutlineInputBorder(),
@@ -95,7 +84,7 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: _phoneController,
+                      controller: _editionController,
                       decoration: const InputDecoration(
                         labelText: "Edition",
                         focusedBorder: OutlineInputBorder(),
@@ -107,7 +96,10 @@ class _HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(140, 50),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                       Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ResultPage()));
+                    },
                     child: const Text('Search'),
                   ),
                   SizedBox(width: 16),
