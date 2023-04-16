@@ -1,3 +1,4 @@
+import 'package:biblioteca/Screens/admin/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:biblioteca/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,14 +24,22 @@ class _VerifyCheckPageState extends State<VerifyCheckPage> {
     pullData();
   }
 
-  void decidePage() {
+  Future<void> decidePage() async {
     print("Hello2${loggedInUser.isVerified}");
     if (loggedInUser.isVerified == true) {
       setState(() {
         _isLoading = true;
       });
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setString('userid',user!.uid );
+      if (loggedInUser.admin == true) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => AdminPage()));
+      } else {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomePage()));
+      }
     } else {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => RemindVerifyPage()));

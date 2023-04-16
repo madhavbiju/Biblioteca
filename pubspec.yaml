@@ -42,6 +42,8 @@ dependencies:
   fluttertoast: ^8.2.1
   qr_code_scanner: ^1.0.1
   url_launcher: ^6.1.10
+  image_picker: ^0.8.7+3
+  firebase_storage: ^11.1.0
 
 dev_dependencies:
   flutter_test:

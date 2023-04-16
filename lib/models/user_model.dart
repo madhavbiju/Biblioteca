@@ -4,13 +4,15 @@ class UserModel {
   String? firstName;
   String? secondName;
   bool? isVerified;
+  bool? admin;
 
   UserModel(
       {this.uid,
       this.email,
       this.firstName,
       this.secondName,
-      this.isVerified});
+      this.isVerified,
+      this.admin});
 
   // receiving data from server
   factory UserModel.fromMap(map) {
@@ -19,7 +21,8 @@ class UserModel {
         email: map['email'],
         firstName: map['firstName'],
         secondName: map['secondName'],
-        isVerified: map['isVerified']);
+        isVerified: map['isVerified'],
+        admin: map['admin']);
   }
 
   // sending data to our server
@@ -30,6 +33,7 @@ class UserModel {
       'firstName': firstName,
       'secondName': secondName,
       'isVerified': isVerified,
+      'admin': admin
     };
   }
 }

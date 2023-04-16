@@ -1,4 +1,5 @@
 import 'package:biblioteca/Screens/qr.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,10 +13,72 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _authorController = TextEditingController();
-  TextEditingController _editionController = TextEditingController();
+ String author = '';
+  String name = '';
+  String edition = '';
 
+Future<void> searchBooks() async {
+    CollectionReference booksRef = FirebaseFirestore.instance.collection('books');
+    QuerySnapshot querySnapshot = await booksRef
+        .where('author', isEqualTo: author)
+        .where('name', isEqualTo: name)
+        .where('edition', isEqualTo: edition)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      var docData = querySnapshot.docs[0].data() as Map<String, dynamic>?; // Explicit casting
+      if (docData != null) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Book Details'),
+              content: Column(
+                children: [
+                  Text('Author: ${docData['author']}'),
+                  Text('Title: ${docData['name']}'),
+                  Text('Edition: ${docData['edition']}'),
+                  Text('Department: ${docData['department']}'),
+                  Text('Shelf: ${docData['shelf_no']}'),
+                  Text('Row: ${docData['row_no']}'),
+                  Text('Column: ${docData['col_no']}'),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print('No matching documents found.');
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('No Matching Books'),
+            content: Text('No books found with the specified criteria.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +127,11 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: _titleController,
+                       onChanged: (value) {
+                setState(() {
+                  name = value;
+                });
+              },
                       decoration: const InputDecoration(
                         labelText: "Title of the Book",
                         focusedBorder: OutlineInputBorder(),
@@ -74,7 +141,11 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: _authorController,
+                      onChanged: (value) {
+                setState(() {
+                  author = value;
+                });
+              },
                       decoration: const InputDecoration(
                         labelText: "Author",
                         focusedBorder: OutlineInputBorder(),
@@ -84,7 +155,11 @@ class _HomePageState extends State<HomePage> {
                   Padding(
                     padding: EdgeInsets.all(16.0),
                     child: TextFormField(
-                      controller: _editionController,
+                       onChanged: (value) {
+                setState(() {
+                  edition = value;
+                });
+              },
                       decoration: const InputDecoration(
                         labelText: "Edition",
                         focusedBorder: OutlineInputBorder(),
@@ -97,8 +172,7 @@ class _HomePageState extends State<HomePage> {
                       minimumSize: Size(140, 50),
                     ),
                     onPressed: () {
-                       Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ResultPage()));
+                        searchBooks();
                     },
                     child: const Text('Search'),
                   ),

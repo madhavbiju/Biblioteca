@@ -38,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((user) {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()));
+            MaterialPageRoute(builder: (context) => VerifyCheckPage()));
       }).catchError((error) {
         print(error);
       });
