@@ -68,7 +68,7 @@ class _AdminPageState extends State<AdminPage> {
 
           if (key.currentState!.validate()) {
             Map<String, dynamic> dataToSend = {
-              'author': 'hi',
+              'author': _authorController.text,
               'department': _departmentController.text,
               'edition': _editionController.text,
               'image': imageUrl,
@@ -176,34 +176,35 @@ class _AdminPageState extends State<AdminPage> {
                               child: Text('Take a Photo'),
                               onPressed: () async {
                                 ImagePicker imagePicker = ImagePicker();
-                                XFile? file = await imagePicker.pickImage(
-                                    source: ImageSource.camera);
-                                print('${file?.path}');
+XFile? file = await imagePicker.pickImage(
+    source: ImageSource.camera);
+print('${file?.path}');
 
-                                if (file == null) return;
-                                setState(() {
-                                  _imageFile = File(file.path);
-                                });
+if (file == null) return;
+setState(() {
+  _imageFile = File(file.path);
+});
 
-                                if (file == null) return;
-                                //Import dart:core
-                                String uniqueFileName = DateTime.now()
-                                    .millisecondsSinceEpoch
-                                    .toString();
-                                Reference referenceRoot =
-                                    FirebaseStorage.instance.ref();
-                                Reference referenceDirImages =
-                                    referenceRoot.child('images');
+if (file == null) return;
+//Import dart:core
+String uniqueFileName = DateTime.now()
+    .millisecondsSinceEpoch
+    .toString();
+Reference referenceRoot =
+    FirebaseStorage.instance.ref();
+Reference referenceDirImages =
+    referenceRoot.child('images');
 
-                                Reference referenceImageToUpload =
-                                    referenceDirImages.child('name');
+Reference referenceImageToUpload =
+    referenceDirImages.child('$uniqueFileName.jpg'); // Use unique filename for each image
 
-                                try {
-                                  await referenceImageToUpload
-                                      .putFile(File(file.path));
-                                  imageUrl = await referenceImageToUpload
-                                      .getDownloadURL();
-                                } catch (error) {}
+try {
+  await referenceImageToUpload
+      .putFile(File(file.path));
+  imageUrl = await referenceImageToUpload
+      .getDownloadURL();
+} catch (error) {}
+
                               },
                             ),
                     ),

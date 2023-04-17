@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
  String author = '';
   String name = '';
   String edition = '';
+  
 
 Future<void> searchBooks() async {
     CollectionReference booksRef = FirebaseFirestore.instance.collection('books');
@@ -35,6 +36,21 @@ Future<void> searchBooks() async {
               title: Text('Book Details'),
               content: Column(
                 children: [
+                  Image.network(
+          docData['image'],
+          fit: BoxFit.cover, // Optional, to specify how the image should fit within the widget
+          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            } else {
+              return CircularProgressIndicator(
+                value: loadingProgress.expectedTotalBytes != null
+                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                    : null,
+              );
+              }
+          },
+        ),
                   Text('Author: ${docData['author']}'),
                   Text('Title: ${docData['name']}'),
                   Text('Edition: ${docData['edition']}'),
