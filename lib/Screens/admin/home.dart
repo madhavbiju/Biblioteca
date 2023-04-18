@@ -3,6 +3,7 @@ import 'package:biblioteca/Screens/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -24,7 +25,7 @@ class _AdminPageState extends State<AdminPage> {
   TextEditingController _rowController = TextEditingController();
   TextEditingController _colController = TextEditingController();
   TextEditingController _shelfController = TextEditingController();
-
+  TextEditingController _eBookController = TextEditingController();
   GlobalKey<FormState> key = GlobalKey();
 
   CollectionReference _reference =
@@ -76,11 +77,21 @@ class _AdminPageState extends State<AdminPage> {
               'row_no': _rowController.text,
               'col_no': _colController.text,
               'shelf_no': _shelfController.text,
+              'ebook_link': _eBookController.text
             };
             _reference.add(dataToSend);
           }
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => AdminPage()));
+              Fluttertoast.showToast(
+        msg: "Uploaded!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+
         },
         label: const Text('Submit'),
         icon: const Icon(Icons.save),
@@ -159,6 +170,16 @@ class _AdminPageState extends State<AdminPage> {
                 controller: _shelfController,
                 decoration: const InputDecoration(
                   labelText: "Shelf",
+                  
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(1.0),
+              child: TextFormField(
+                controller: _eBookController,
+                decoration: const InputDecoration(
+                  labelText: "eBook Link",
                   
                 ),
               ),

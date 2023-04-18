@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:biblioteca/Screens/qr.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:biblioteca/Screens/result.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'login.dart';
 
@@ -16,6 +19,7 @@ class _HomePageState extends State<HomePage> {
  String author = '';
   String name = '';
   String edition = '';
+  String ebookLink = '';
   
 
 Future<void> searchBooks() async {
@@ -29,46 +33,89 @@ Future<void> searchBooks() async {
     if (querySnapshot.docs.isNotEmpty) {
       var docData = querySnapshot.docs[0].data() as Map<String, dynamic>?; // Explicit casting
       if (docData != null) {
+        ebookLink = docData['ebook_link'];
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Book Details'),
-              content: Column(
-                children: [
-                  Image.network(
-          docData['image'],
-          fit: BoxFit.cover, // Optional, to specify how the image should fit within the widget
-          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-            if (loadingProgress == null) {
-              return child;
-            } else {
-              return CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                    : null,
-              );
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(16.0),
+  ),
+  backgroundColor: Colors.white.withOpacity(0.7),
+  title: Center(child: Text('Book Details')),
+  content: Stack(
+    children: [
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.network(
+            docData['image'],
+            fit: BoxFit.cover,
+            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              } else {
+                return CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                      : null,
+                );
               }
-          },
-        ),
-                  Text('Author: ${docData['author']}'),
-                  Text('Title: ${docData['name']}'),
-                  Text('Edition: ${docData['edition']}'),
-                  Text('Department: ${docData['department']}'),
-                  Text('Shelf: ${docData['shelf_no']}'),
-                  Text('Row: ${docData['row_no']}'),
-                  Text('Column: ${docData['col_no']}'),
-                ],
-              ),
-              actions: [
-                TextButton(
+            },
+          ),
+          SizedBox(height: 20),
+          Text('Author: ${docData['author']}'),
+          SizedBox(height: 5),
+          Text('Title: ${docData['name']}'),
+          SizedBox(height: 5),
+          Text('Edition: ${docData['edition']}'),
+          SizedBox(height: 5),
+          Text('Department: ${docData['department']}'),
+          SizedBox(height: 5),
+          Text('Shelf: ${docData['shelf_no']}'),
+          SizedBox(height: 5),
+          Text('Row: ${docData['row_no']}'),
+          SizedBox(height: 5),
+          Text('Column: ${docData['col_no']}'),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Icon(Icons.view_in_ar),
                 ),
-              ],
-            );
+              ),
+              SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+        // Check if the URL is not null or empty
+        if (ebookLink != null && ebookLink.isNotEmpty) {
+          print('$ebookLink');
+          launchUrl(Uri.parse('$ebookLink'));
+        }
+                  },
+                  child: const Icon(Icons.file_download),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  ),
+  actions: [
+    TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      child: Text('OK'),
+    ),
+  ],
+);
+
           },
         );
       } else {
