@@ -44,6 +44,9 @@ dependencies:
   url_launcher: ^6.1.10
   image_picker: ^0.8.7+3
   firebase_storage: ^11.1.0
+  external_app_launcher: ^3.1.0
+  device_apps: ^2.2.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

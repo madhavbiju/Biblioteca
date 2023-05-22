@@ -1,6 +1,7 @@
 import 'package:biblioteca/Screens/reset.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:biblioteca/Screens/SignUp.dart';
 import 'package:biblioteca/Screens/home.dart';
@@ -41,6 +42,13 @@ class _SignInPageState extends State<SignInPage> {
             MaterialPageRoute(builder: (context) => VerifyCheckPage()));
       }).catchError((error) {
         print(error);
+        Fluttertoast.showToast(
+            msg: error.message.toString(),
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            textColor: Colors.white,
+            fontSize: 16.0);
       });
     }
   }
@@ -74,6 +82,13 @@ class _SignInPageState extends State<SignInPage> {
             _isLoading = false;
           });
           print(error);
+          Fluttertoast.showToast(
+              msg: error.message.toString(),
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              textColor: Colors.white,
+              fontSize: 16.0);
         });
       }
     }
@@ -153,44 +168,46 @@ class _SignInPageState extends State<SignInPage> {
                           },
                         ),
                         SizedBox(
-                  height: 20.0,
-                ),
-                _isLoading
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                        child: Text('Sign In'),
-                        onPressed: _submit,
-                      ),
-                SizedBox(
-                  height: 20.0,
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            ResetScreen(),
-                        transitionDuration: Duration.zero,
-                        reverseTransitionDuration: Duration.zero,
-                      ),
-                    );
-                  },
-                  child: Text('Forgot password?'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation1, animation2) =>
-                            SignUpPage(),
-                        transitionDuration: Duration.zero,
-                        reverseTransitionDuration: Duration.zero,
-                      ),
-                    );
-                  },
-                  child: Text('Sign up'),
+                          height: 20.0,
+                        ),
+                        _isLoading
+                            ? CircularProgressIndicator()
+                            : ElevatedButton(
+                                child: Text('Sign In'),
+                                onPressed: _submit,
+                              ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation1, animation2) =>
+                                        ResetScreen(),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
+                          child: Text('Forgot password?'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation1, animation2) =>
+                                        SignUpPage(),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
+                          child: Text('Sign up'),
                         ),
                       ],
                     ),

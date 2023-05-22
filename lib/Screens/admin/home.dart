@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'bottomnav.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -38,14 +39,14 @@ class _AdminPageState extends State<AdminPage> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 4,
         centerTitle: true,
-        title: Text('Admin'),
+        title: Text('Add a Book'),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -53,12 +54,14 @@ class _AdminPageState extends State<AdminPage> {
             ),
             tooltip: 'Logout',
             onPressed: () {
-        _logout();
+              _logout();
             },
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
+      bottomNavigationBar: BottomNav(selectedIndex: 1),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.save),
         onPressed: () async {
           if (imageUrl.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -77,24 +80,21 @@ class _AdminPageState extends State<AdminPage> {
               'row_no': _rowController.text,
               'col_no': _colController.text,
               'shelf_no': _shelfController.text,
-              'ebook_link': _eBookController.text
+              'ebook_link': _eBookController.text,
+              'is_available': "yes"
             };
             _reference.add(dataToSend);
           }
           Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => AdminPage()));
-              Fluttertoast.showToast(
-        msg: "Uploaded!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-
+          Fluttertoast.showToast(
+              msg: "Uploaded!",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              textColor: Colors.white,
+              fontSize: 16.0);
         },
-        label: const Text('Submit'),
-        icon: const Icon(Icons.save),
       ),
       body: Center(
         child: Column(
@@ -105,85 +105,78 @@ class _AdminPageState extends State<AdminPage> {
                 key: key,
                 child: Column(
                   children: [
-                   Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _authorController,
-                decoration: const InputDecoration(
-                  labelText: "Author",
-                  
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _departmentController,
-                decoration: const InputDecoration(
-                  labelText: "Department",
-                  
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _editionController,
-                decoration: const InputDecoration(
-                  labelText: "Edition",
-                  
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: "Name",
-                  
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _rowController,
-                decoration: const InputDecoration(
-                  labelText: "Row",
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _colController,
-                decoration: const InputDecoration(
-                  labelText: "Column",
-                  
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _shelfController,
-                decoration: const InputDecoration(
-                  labelText: "Shelf",
-                  
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(1.0),
-              child: TextFormField(
-                controller: _eBookController,
-                decoration: const InputDecoration(
-                  labelText: "eBook Link",
-                  
-                ),
-              ),
-            ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _authorController,
+                        decoration: const InputDecoration(
+                          labelText: "Author",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _departmentController,
+                        decoration: const InputDecoration(
+                          labelText: "Department",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _editionController,
+                        decoration: const InputDecoration(
+                          labelText: "Edition",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                          labelText: "Name",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _rowController,
+                        decoration: const InputDecoration(
+                          labelText: "Row",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _colController,
+                        decoration: const InputDecoration(
+                          labelText: "Column",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _shelfController,
+                        decoration: const InputDecoration(
+                          labelText: "Shelf",
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(1.0),
+                      child: TextFormField(
+                        controller: _eBookController,
+                        decoration: const InputDecoration(
+                          labelText: "eBook Link",
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: _imageFile != null
@@ -197,35 +190,35 @@ class _AdminPageState extends State<AdminPage> {
                               child: Text('Take a Photo'),
                               onPressed: () async {
                                 ImagePicker imagePicker = ImagePicker();
-XFile? file = await imagePicker.pickImage(
-    source: ImageSource.camera);
-print('${file?.path}');
+                                XFile? file = await imagePicker.pickImage(
+                                    source: ImageSource.camera);
+                                print('${file?.path}');
 
-if (file == null) return;
-setState(() {
-  _imageFile = File(file.path);
-});
+                                if (file == null) return;
+                                setState(() {
+                                  _imageFile = File(file.path);
+                                });
 
-if (file == null) return;
+                                if (file == null) return;
 //Import dart:core
-String uniqueFileName = DateTime.now()
-    .millisecondsSinceEpoch
-    .toString();
-Reference referenceRoot =
-    FirebaseStorage.instance.ref();
-Reference referenceDirImages =
-    referenceRoot.child('images');
+                                String uniqueFileName = DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString();
+                                Reference referenceRoot =
+                                    FirebaseStorage.instance.ref();
+                                Reference referenceDirImages =
+                                    referenceRoot.child('images');
 
-Reference referenceImageToUpload =
-    referenceDirImages.child('$uniqueFileName.jpg'); // Use unique filename for each image
+                                Reference referenceImageToUpload =
+                                    referenceDirImages.child(
+                                        '$uniqueFileName.jpg'); // Use unique filename for each image
 
-try {
-  await referenceImageToUpload
-      .putFile(File(file.path));
-  imageUrl = await referenceImageToUpload
-      .getDownloadURL();
-} catch (error) {}
-
+                                try {
+                                  await referenceImageToUpload
+                                      .putFile(File(file.path));
+                                  imageUrl = await referenceImageToUpload
+                                      .getDownloadURL();
+                                } catch (error) {}
                               },
                             ),
                     ),
@@ -245,7 +238,7 @@ try {
                           });
 
                           if (file == null) return;
-                          //Import dart:core
+//Import dart:core
                           String uniqueFileName =
                               DateTime.now().millisecondsSinceEpoch.toString();
                           Reference referenceRoot =
@@ -254,7 +247,8 @@ try {
                               referenceRoot.child('images');
 
                           Reference referenceImageToUpload =
-                              referenceDirImages.child('name');
+                              referenceDirImages.child(
+                                  '$uniqueFileName.jpg'); // Use unique filename for each image
 
                           try {
                             await referenceImageToUpload
@@ -274,7 +268,8 @@ try {
       ),
     );
   }
-void _logout() async {
+
+  void _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('email');
     prefs.remove('password');
@@ -284,5 +279,4 @@ void _logout() async {
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
   }
-
 }
