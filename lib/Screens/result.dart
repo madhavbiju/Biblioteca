@@ -1,11 +1,11 @@
-import 'dart:ui';
 import 'package:biblioteca/Screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'login.dart';
 
 class ResultPage extends StatefulWidget {
+  const ResultPage({super.key});
+
   @override
   _ResultPageState createState() => _ResultPageState();
 }
@@ -25,7 +25,7 @@ class _ResultPageState extends State<ResultPage> {
           ),
           Center(
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Container(
                 decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
@@ -35,7 +35,7 @@ class _ResultPageState extends State<ResultPage> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -46,7 +46,7 @@ class _ResultPageState extends State<ResultPage> {
                     borderRadius: BorderRadius.circular(16.0), // Set the rounded corner radius
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -54,46 +54,46 @@ class _ResultPageState extends State<ResultPage> {
                           'assets/CN.PNG',
                           height: 100, // Set the height of the logo image
                         ),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Computer Networks', // Replace with your desired text
                           style: TextStyle(fontSize: 22.0),
                         ),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Tanenbaum, Andrew S', // Replace with your desired text
                           style: TextStyle(fontSize: 22.0),
                         ),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Master of computer applications', // Replace with your desired text
                           style: TextStyle(fontSize: 22.0),
                         ),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Shelf Number : 2', // Replace with your desired text
                           style: TextStyle(fontSize: 22.0),
                         ),
-                        SizedBox(height: 16),
-                        Text(
+                        const SizedBox(height: 16),
+                        const Text(
                           'Row Number : 2', // Replace with your desired text
                           style: TextStyle(fontSize: 22.0),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         InkWell(
   onTap: () => launchUrl(Uri.parse('https://www.google.com')),
-  child: Text(
+  child: const Text(
     'Open AR View',
     style: TextStyle(decoration: TextDecoration.underline,fontSize: 22.0, color: Colors.blue),
   ),
 ),
-SizedBox(height: 16),
+const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
                              Navigator.push(context,
-                MaterialPageRoute(builder: (context) => HomePage()));
+                MaterialPageRoute(builder: (context) => const HomePage()));
                           },
-                          child: Text('Go Back'), // Replace with your desired button label
+                          child: const Text('Go Back'), // Replace with your desired button label
                         ),
                       ],
                     ),

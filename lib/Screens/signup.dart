@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:biblioteca/models/user_model.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -17,10 +19,10 @@ class _SignUpPageState extends State<SignUpPage> {
   String? errorMessage;
   final _formKey = GlobalKey<FormState>();
 
-  final firstNameEditingController = new TextEditingController();
-  final secondNameEditingController = new TextEditingController();
-  final emailEditingController = new TextEditingController();
-  final passwordEditingController = new TextEditingController();
+  final firstNameEditingController = TextEditingController();
+  final secondNameEditingController = TextEditingController();
+  final emailEditingController = TextEditingController();
+  final passwordEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +38,8 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           Center(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              padding: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
                 color: Colors.white.withOpacity(0.7), // set opacity here
@@ -46,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -54,14 +56,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 alignment: WrapAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Image.asset(
                       'assets/logo.png',
                       height: 100, // Set the height of the logo image
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                   ),
       
       Form(
@@ -73,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               TextFormField(
                 controller: emailEditingController,
-                decoration: InputDecoration(labelText: "Email"),
+                decoration: const InputDecoration(labelText: "Email"),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Please enter a valid email";
@@ -87,7 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
               TextFormField(
                 controller: passwordEditingController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: "Password"),
+                decoration: const InputDecoration(labelText: "Password"),
                 validator: (value) {
                   if (value!.length < 6) {
                     return "Password must be at least 6 characters";
@@ -100,7 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               TextFormField(
                 controller: firstNameEditingController,
-                decoration: InputDecoration(labelText: "First Name"),
+                decoration: const InputDecoration(labelText: "First Name"),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Please enter your First name";
@@ -113,7 +115,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               TextFormField(
                 controller: secondNameEditingController,
-                decoration: InputDecoration(labelText: "Last Name"),
+                decoration: const InputDecoration(labelText: "Last Name"),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return "Please enter your Last name";
@@ -131,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     signUp(emailEditingController.text,
                         passwordEditingController.text);
                   },
-                  child: Text("Sign Up"),
+                  child: const Text("Sign Up"),
                 ),
               ),
               TextButton(
@@ -140,13 +142,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, animation1, animation2) =>
-                          SignInPage(),
+                          const SignInPage(),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
                   );
                 },
-                child: Text('Already have an account? Login'),
+                child: const Text('Already have an account? Login'),
               ),
                       ],
                     ),
@@ -169,7 +171,7 @@ class _SignUpPageState extends State<SignUpPage> {
             .then((_) {
           postDetailsToFirestore();
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => VerifyScreen()));
+              MaterialPageRoute(builder: (context) => const VerifyScreen()));
         }).catchError((e) {
           Fluttertoast.showToast(msg: e!.message);
         });
@@ -226,7 +228,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => SignInPage()),
+        MaterialPageRoute(builder: (context) => const SignInPage()),
         (route) => false);
   }
 }

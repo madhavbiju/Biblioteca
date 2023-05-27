@@ -5,9 +5,9 @@
    <package android:name="com.aroha.annahasta" /> // your android package name
  </queries>
    <application
-        android:label="biblioteca"
+        android:label="Biblioteca"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

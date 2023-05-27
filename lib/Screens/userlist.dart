@@ -1,7 +1,5 @@
 import 'package:device_apps/device_apps.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,7 +14,7 @@ class _ListPageState extends State<ListPage> {
   List _allResults = [];
   String ebookLink = '';
   String? date;
-  TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
   List data = [];
 
   final TextEditingController _searchController = TextEditingController();
@@ -87,7 +85,7 @@ class _ListPageState extends State<ListPage> {
         elevation: 4,
         title: TextField(
           controller: _searchController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Search...',
             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
@@ -108,7 +106,7 @@ class _ListPageState extends State<ListPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Center(child: Text('Book Details')),
+                      title: const Center(child: Text('Book Details')),
                       content: Stack(
                         children: [
                           Column(
@@ -139,35 +137,34 @@ class _ListPageState extends State<ListPage> {
                               TextButton(
                                 onPressed: () async {
                                   // Check if the URL is not null or empty
-                                  if (ebookLink != null &&
-                                      ebookLink.isNotEmpty) {
-                                    print('$ebookLink');
-                                    launchUrl(Uri.parse('$ebookLink'));
+                                  if (ebookLink.isNotEmpty) {
+                                    print(ebookLink);
+                                    launchUrl(Uri.parse(ebookLink));
                                   }
                                 },
                                 child: const Text('Download eBook'),
                               ),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Author: ${data[index]['author']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Title: ${data[index]['name']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Edition: ${data[index]['edition']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Department: ${data[index]['department']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Shelf: ${data[index]['shelf_no']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Row: ${data[index]['row_no']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Column: ${data[index]['col_no']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               Text('Available: ${data[index]['is_available']}'),
-                              SizedBox(height: 1),
+                              const SizedBox(height: 1),
                               data[index]['is_available'] == 'No'
                                   ? Text(
                                       'Date of Return: ${data[index]['not_available_date']}')
-                                  : SizedBox.shrink(),
+                                  : const SizedBox.shrink(),
                               Row(
                                 children: [
                                   Expanded(
@@ -188,7 +185,7 @@ class _ListPageState extends State<ListPage> {
                                       child: const Icon(Icons.view_in_ar),
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Expanded(
                                     child: ElevatedButton(
                                       onPressed: () async {
@@ -218,7 +215,7 @@ class _ListPageState extends State<ListPage> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('Close'),
+                          child: const Text('Close'),
                         )
                       ],
                     );

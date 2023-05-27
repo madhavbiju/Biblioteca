@@ -6,6 +6,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 
 class ScanPage extends StatefulWidget {
+  const ScanPage({super.key});
+
   @override
   _ScanPageState createState() => _ScanPageState();
 }
@@ -31,7 +33,7 @@ class _ScanPageState extends State<ScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scan'),
+        title: const Text('Scan'),
       ),
       body: Column(
         children: <Widget>[

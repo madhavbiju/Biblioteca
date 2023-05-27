@@ -6,6 +6,8 @@ import 'package:biblioteca/Screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -28,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
+      loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -49,33 +51,33 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 "Hi, ${loggedInUser.firstName} ${loggedInUser.secondName}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text("${email}",
-                  style: TextStyle(
+              Text("$email",
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(150, 50),
+                  minimumSize: const Size(150, 50),
                 ),
                 onPressed: () {
                   _logout();
                 },
-                child: Text('Logout'),
+                child: const Text('Logout'),
               ),
             ],
           ),
@@ -92,6 +94,6 @@ class _ProfilePageState extends State<ProfilePage> {
     FirebaseAuth.instance.signOut();
 
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => const SignInPage()));
   }
 }

@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../login.dart';
 import 'bottomnav.dart';
-import 'edit.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -19,10 +18,11 @@ class _UserPageState extends State<UserPage> {
   List _allResults = [];
   String ebookLink = '';
   String? date;
-  TextEditingController _dateTimeController = TextEditingController();
-  TextEditingController _userfirstNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _departmentController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _userfirstNameController =
+      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _departmentController = TextEditingController();
   List data = [];
 
   final TextEditingController _searchController = TextEditingController();
@@ -47,6 +47,11 @@ class _UserPageState extends State<UserPage> {
         }
         var email = clientSnapShot['email'].toString().toLowerCase();
         if (email.contains(_searchController.text.toLowerCase())) {
+          showResults.add(clientSnapShot);
+        }
+
+        var sname = clientSnapShot['secondName'].toString().toLowerCase();
+        if (sname.contains(_searchController.text.toLowerCase())) {
           showResults.add(clientSnapShot);
         }
       }
@@ -82,14 +87,36 @@ class _UserPageState extends State<UserPage> {
     super.didChangeDependencies();
   }
 
+  void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('email');
+    prefs.remove('password');
+
+    FirebaseAuth.instance.signOut();
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignInPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.exit_to_app,
+            ),
+            tooltip: 'Logout',
+            onPressed: () {
+              _logout();
+            },
+          ),
+        ],
         elevation: 4,
         title: TextField(
           controller: _searchController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Search...',
             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
@@ -101,7 +128,7 @@ class _UserPageState extends State<UserPage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      bottomNavigationBar: BottomNav(selectedIndex: 2),
+      bottomNavigationBar: const BottomNav(selectedIndex: 2),
       body: ListView.builder(
           itemCount: data.length,
           itemBuilder: (context, index) {

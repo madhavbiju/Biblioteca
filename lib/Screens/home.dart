@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:biblioteca/Screens/qr.dart';
 import 'package:biblioteca/Screens/userlist.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_apps/device_apps.dart';
@@ -8,10 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:external_app_launcher/external_app_launcher.dart';
 import 'login.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -41,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 borderRadius: BorderRadius.circular(16.0),
               ),
               backgroundColor: Colors.white.withOpacity(0.7),
-              title: Center(child: Text('Book Details')),
+              title: const Center(child: Text('Book Details')),
               content: Stack(
                 children: [
                   Column(
@@ -67,34 +65,34 @@ class _HomePageState extends State<HomePage> {
                       TextButton(
                         onPressed: () async {
                           // Check if the URL is not null or empty
-                          if (ebookLink != null && ebookLink.isNotEmpty) {
-                            print('$ebookLink');
-                            launchUrl(Uri.parse('$ebookLink'));
+                          if (ebookLink.isNotEmpty) {
+                            print(ebookLink);
+                            launchUrl(Uri.parse(ebookLink));
                           }
                         },
                         child: const Text('Download eBook'),
                       ),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Author: ${docData['author']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Title: ${docData['name']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Edition: ${docData['edition']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Department: ${docData['department']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Shelf: ${docData['shelf_no']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Row: ${docData['row_no']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Column: ${docData['col_no']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       Text('Available: ${docData['is_available']}'),
-                      SizedBox(height: 1),
+                      const SizedBox(height: 1),
                       docData['is_available'] == 'No'
                           ? Text(
                               'Date of Return: ${docData['not_available_date']}')
-                          : SizedBox.shrink(),
+                          : const SizedBox.shrink(),
                       Row(
                         children: [
                           Expanded(
@@ -115,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                               child: const Icon(Icons.view_in_ar),
                             ),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () async {
@@ -145,7 +143,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -159,14 +157,14 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('No Matching Books'),
-            content: Text('No books found with the specified criteria.'),
+            title: const Text('No Matching Books'),
+            content: const Text('No books found with the specified criteria.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -196,8 +194,8 @@ class _HomePageState extends State<HomePage> {
           ),
           Center(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              padding: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
                 color: Colors.white.withOpacity(0.7), // set opacity here
@@ -206,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -214,14 +212,14 @@ class _HomePageState extends State<HomePage> {
                 alignment: WrapAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Image.asset(
                       'assets/logo.png',
                       height: 100, // Set the height of the logo image
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
                       onChanged: (value) {
                         setState(() {
@@ -234,24 +232,26 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(140, 50),
+                      minimumSize: const Size(140, 50),
                     ),
                     onPressed: () {
                       searchBooks();
                     },
                     child: const Text('Search'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      minimumSize: Size(140, 50),
+                      minimumSize: const Size(140, 50),
                     ),
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => ListPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ListPage()));
                     },
                     child: const Text('List Books'),
                   ),
@@ -271,7 +271,7 @@ class _HomePageState extends State<HomePage> {
 
     FirebaseAuth.instance.signOut();
 
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignInPage()));
   }
 }

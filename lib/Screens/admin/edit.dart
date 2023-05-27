@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EditPage extends StatefulWidget {
   final String myVariable;
@@ -24,7 +25,7 @@ class _EditPageState extends State<EditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Book'),
+        title: const Text('Edit Book'),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -33,7 +34,7 @@ class _EditPageState extends State<EditPage> {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -54,70 +55,98 @@ class _EditPageState extends State<EditPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _authorController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-Z ]')), // Only alphabets allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Author",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _departmentController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-Z ]')), // Only alphabets allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Department",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _editionController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Only numeric characters allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Edition",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _nameController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-Z ]')), // Only alphabets allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Name",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _rowController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Only numeric characters allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Row",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _colController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Only numeric characters allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Column",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _shelfController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter
+                            .digitsOnly, // Only numeric characters allowed
+                      ],
                       decoration: const InputDecoration(
                         labelText: "Shelf",
                       ),
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(1.0),
+                    padding: const EdgeInsets.all(1.0),
                     child: TextFormField(
                       controller: _eBookController,
                       decoration: const InputDecoration(
@@ -125,7 +154,7 @@ class _EditPageState extends State<EditPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
@@ -133,13 +162,13 @@ class _EditPageState extends State<EditPage> {
                     onPressed: () {
                       deleteDocument(widget.myVariable);
                     },
-                    child: Text('Delete Book'),
+                    child: const Text('Delete Book'),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       _updateBook();
                     },
-                    child: Text('Update Book'),
+                    child: const Text('Update Book'),
                   ),
                 ],
               ),
@@ -176,8 +205,8 @@ class _EditPageState extends State<EditPage> {
       'shelf_no': _shelfController.text,
       'ebook_link': _eBookController.text,
     }).then((value) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Book updated successfully')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Book updated successfully')));
     }).catchError((error) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error.toString())));

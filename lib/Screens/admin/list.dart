@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../login.dart';
 import 'bottomnav.dart';
 
 class ListPage extends StatefulWidget {
+  const ListPage({super.key});
+
   @override
   _ListPageState createState() => _ListPageState();
 }
@@ -15,7 +15,7 @@ class ListPage extends StatefulWidget {
 class _ListPageState extends State<ListPage> {
   String ebookLink = '';
   String? date;
-  TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
   final CollectionReference booksCollection =
       FirebaseFirestore.instance.collection('books');
   @override
@@ -26,13 +26,13 @@ class _ListPageState extends State<ListPage> {
         centerTitle: true,
         title: InkWell(
           onTap: () {},
-          child: Text(
+          child: const Text(
             'Books',
           ),
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.exit_to_app,
             ),
             tooltip: 'Logout',
@@ -43,7 +43,7 @@ class _ListPageState extends State<ListPage> {
         ],
         automaticallyImplyLeading: false,
       ),
-      bottomNavigationBar: BottomNav(selectedIndex: 0),
+      bottomNavigationBar: const BottomNav(selectedIndex: 0),
       body: StreamBuilder<QuerySnapshot>(
         stream: booksCollection.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -51,7 +51,7 @@ class _ListPageState extends State<ListPage> {
             return Text('Error: ${snapshot.error}');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
@@ -66,7 +66,7 @@ class _ListPageState extends State<ListPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Center(child: Text('Book Details')),
+                        title: const Center(child: Text('Book Details')),
                         content: Stack(
                           children: [
                             Column(
@@ -94,23 +94,23 @@ class _ListPageState extends State<ListPage> {
                                     }
                                   },
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 Text('Author: ${data['author']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Title: ${data['name']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Edition: ${data['edition']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Department: ${data['department']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Shelf: ${data['shelf_no']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Row: ${data['row_no']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Column: ${data['col_no']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                                 Text('Available: ${data['is_available']}'),
-                                SizedBox(height: 5),
+                                const SizedBox(height: 5),
                               ],
                             ),
                           ],
@@ -129,23 +129,23 @@ class _ListPageState extends State<ListPage> {
                                 date = await showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                    title: Text('Enter Return Date'),
+                                    title: const Text('Enter Details'),
                                     content: TextFormField(
                                       controller: _dateTimeController,
                                       autofocus: true,
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         labelText: 'Date',
                                       ),
                                     ),
                                     actions: <Widget>[
                                       TextButton(
-                                        child: Text('CANCEL'),
+                                        child: const Text('CANCEL'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
                                       ),
                                       TextButton(
-                                        child: Text('OK'),
+                                        child: const Text('OK'),
                                         onPressed: () async {
                                           await booksCollection
                                               .doc(document.id)
@@ -190,7 +190,7 @@ class _ListPageState extends State<ListPage> {
                                 print('Error deleting document: $e');
                               }
                             },
-                            child: Text('Delete'),
+                            child: const Text('Delete'),
                           )
                         ],
                       );
@@ -212,7 +212,7 @@ class _ListPageState extends State<ListPage> {
 
     FirebaseAuth.instance.signOut();
 
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignInPage()));
   }
 }

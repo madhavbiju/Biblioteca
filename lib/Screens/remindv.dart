@@ -1,11 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:biblioteca/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:biblioteca/Screens/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RemindVerifyPage extends StatefulWidget {
+  const RemindVerifyPage({super.key});
+
   @override
   _RemindVerifyPageState createState() => _RemindVerifyPageState();
 }
@@ -31,26 +31,26 @@ class _RemindVerifyPageState extends State<RemindVerifyPage> {
     return Scaffold(
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text("Please verify the mail sent to ${email} to use the App",
-                  style: TextStyle(
+              Text("Please verify the mail sent to $email to use the App",
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(150, 50),
+                  minimumSize: const Size(150, 50),
                 ),
                 onPressed: () {
                   _logout();
                 },
-                child: Text('Back to Login'),
+                child: const Text('Back to Login'),
               ),
             ],
           ),
@@ -67,6 +67,6 @@ class _RemindVerifyPageState extends State<RemindVerifyPage> {
     FirebaseAuth.instance.signOut();
 
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => SignInPage()));
+        .pushReplacement(MaterialPageRoute(builder: (context) => const SignInPage()));
   }
 }

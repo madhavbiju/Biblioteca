@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../login.dart';
 import 'bottomnav.dart';
 import 'edit.dart';
 
@@ -15,14 +17,23 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  List<GlobalKey<FormState>> formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
   final String myVariable = "Hello, World!";
   List _allResults = [];
   String ebookLink = '';
   String? date;
-  TextEditingController _dateTimeController = TextEditingController();
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _departmentController = TextEditingController();
+  final TextEditingController _dateTimeController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _departmentController = TextEditingController();
+  final TextEditingController _borrowerController = TextEditingController();
+
   List data = [];
 
   final TextEditingController _searchController = TextEditingController();
@@ -86,14 +97,44 @@ class _SearchPageState extends State<SearchPage> {
     super.didChangeDependencies();
   }
 
+  bool isValidEmail(String email) {
+    // Regular expression pattern for email validation
+    final RegExp emailRegex = RegExp(
+      r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+    );
+    return emailRegex.hasMatch(email);
+  }
+
+  void _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('email');
+    prefs.remove('password');
+
+    FirebaseAuth.instance.signOut();
+
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignInPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.exit_to_app,
+            ),
+            tooltip: 'Logout',
+            onPressed: () {
+              _logout();
+            },
+          ),
+        ],
         elevation: 4,
         title: TextField(
           controller: _searchController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Search...',
             hintStyle: TextStyle(color: Colors.white),
             border: InputBorder.none,
@@ -105,7 +146,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      bottomNavigationBar: BottomNav(selectedIndex: 0),
+      bottomNavigationBar: const BottomNav(selectedIndex: 0),
       body: ListView.builder(
           itemCount: data.length,
           itemBuilder: (context, index) {
@@ -116,7 +157,7 @@ class _SearchPageState extends State<SearchPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Center(child: Text('Book Details')),
+                      title: const Center(child: Text('Book Details')),
                       content: Stack(
                         children: [
                           Column(
@@ -144,27 +185,27 @@ class _SearchPageState extends State<SearchPage> {
                                   }
                                 },
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Text('Author: ${data[index]['author']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Title: ${data[index]['name']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Edition: ${data[index]['edition']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Department: ${data[index]['department']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Shelf: ${data[index]['shelf_no']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Row: ${data[index]['row_no']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Column: ${data[index]['col_no']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               Text('Available: ${data[index]['is_available']}'),
-                              SizedBox(height: 5),
+                              const SizedBox(height: 5),
                               data[index]['is_available'] == 'No'
                                   ? Text(
-                                      'Date of Return: ${data[index]['not_available_date']}')
-                                  : SizedBox.shrink(),
+                                      'Date of Return: ${data[index]['not_available_date']}\n\nBorrower Name: ${data[index]['user']}\n\nBorrower Email: ${data[index]['email']}\n\nBorrower Role: ${data[index]['borrower']}')
+                                  : const SizedBox.shrink(),
                             ],
                           ),
                         ],
@@ -185,78 +226,142 @@ class _SearchPageState extends State<SearchPage> {
                               date = await showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  title: Text('Enter Return Date'),
+                                  title: const Text('Enter Details'),
                                   content: Column(
                                     children: [
-                                      TextFormField(
-                                        controller: _dateTimeController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Date',
-                                          suffixIcon:
-                                              Icon(Icons.calendar_today),
-                                        ),
-                                        onTap: () async {
-                                          DateTime? selectedDate =
-                                              await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1900),
-                                            lastDate: DateTime(2100),
-                                          );
-                                          if (selectedDate != null) {
-                                            _dateTimeController.text =
-                                                DateFormat('dd-MM-yyyy')
-                                                    .format(selectedDate);
-                                          }
-                                        },
-                                      ),
-                                      TextFormField(
-                                        controller: _userNameController,
-                                        decoration: InputDecoration(
-                                          labelText: 'User Name',
-                                          // Add any desired decoration or styling properties
+                                      Form(
+                                        key: formKeys[0],
+                                        child: TextFormField(
+                                          controller: _dateTimeController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Date',
+                                            suffixIcon:
+                                                Icon(Icons.calendar_today),
+                                          ),
+                                          onTap: () async {
+                                            DateTime? selectedDate =
+                                                await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime(1900),
+                                              lastDate: DateTime(2100),
+                                            );
+                                            if (selectedDate != null) {
+                                              _dateTimeController.text =
+                                                  DateFormat('dd-MM-yyyy')
+                                                      .format(selectedDate);
+                                            }
+                                          },
                                         ),
                                       ),
-                                      TextFormField(
-                                        controller: _emailController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Mail Id',
-                                          // Add any desired decoration or styling properties
+                                      Form(
+                                        key: formKeys[1],
+                                        child: TextFormField(
+                                          controller: _userNameController,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                    r'[a-zA-Z]')), // Only alphabets allowed
+                                          ],
+                                          decoration: const InputDecoration(
+                                            labelText: 'User Name',
+                                            // Add any desired decoration or styling properties
+                                          ),
                                         ),
                                       ),
-                                      TextFormField(
-                                        controller: _departmentController,
-                                        decoration: InputDecoration(
-                                          labelText: 'Department',
-                                          // Add any desired decoration or styling properties
+                                      Form(
+                                        key: formKeys[2],
+                                        child: TextFormField(
+                                          controller: _emailController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Mail Id',
+                                            // Add any desired decoration or styling properties
+                                          ),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter an email';
+                                            }
+                                            if (!isValidEmail(value!)) {
+                                              return 'Please enter a valid email';
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                      ),
+                                      Form(
+                                        key: formKeys[3],
+                                        child: TextFormField(
+                                          controller: _departmentController,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                    r'[a-zA-Z]')), // Only alphabets allowed
+                                          ],
+                                          decoration: const InputDecoration(
+                                            labelText: 'Department',
+                                            // Add any desired decoration or styling properties
+                                          ),
+                                        ),
+                                      ),
+                                      Form(
+                                        key: formKeys[4],
+                                        child: TextFormField(
+                                          controller: _borrowerController,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp(
+                                                    r'[a-zA-Z]')), // Only alphabets allowed
+                                          ],
+                                          decoration: const InputDecoration(
+                                            labelText:
+                                                'Borrower - Student/Staff',
+                                            hintText: 'Student/Staff',
+                                            // Add any desired decoration or styling properties
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: Text('CANCEL'),
+                                      child: const Text('CANCEL'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
                                     ),
                                     TextButton(
-                                      child: Text('OK'),
+                                      child: const Text('OK'),
                                       onPressed: () async {
-                                        await FirebaseFirestore.instance
-                                            .collection('books')
-                                            .doc(data[index].id)
-                                            .update({
-                                          'is_available': newAvailability,
-                                          'not_available_date':
-                                              _dateTimeController.text,
-                                          'user': _userNameController.text,
-                                          'email': _emailController.text,
-                                          'userdept':
-                                              _departmentController.text,
-                                        });
+                                        if ((formKeys[0].currentState!.validate()) &&
+                                            (formKeys[1]
+                                                .currentState!
+                                                .validate()) &&
+                                            (formKeys[2]
+                                                .currentState!
+                                                .validate()) &&
+                                            (formKeys[3]
+                                                .currentState!
+                                                .validate()) &&
+                                            (formKeys[4]
+                                                .currentState!
+                                                .validate())) {
+                                          await FirebaseFirestore.instance
+                                              .collection('books')
+                                              .doc(data[index].id)
+                                              .update({
+                                            'is_available': newAvailability,
+                                            'not_available_date':
+                                                _dateTimeController.text,
+                                            'user': _userNameController.text,
+                                            'email': _emailController.text,
+                                            'userdept':
+                                                _departmentController.text,
+                                            'borrower': _borrowerController.text
+                                          });
 
-                                        Navigator.of(context).pop();
+                                          Navigator.of(context).pop();
+                                        }
+                                        ;
                                       },
                                     ),
                                   ],
@@ -290,7 +395,7 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             );
                           },
-                          child: Text('Edit'),
+                          child: const Text('Edit'),
                         )
                       ],
                     );

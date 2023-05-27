@@ -4,10 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:biblioteca/Screens/SignUp.dart';
-import 'package:biblioteca/Screens/home.dart';
 import 'package:biblioteca/Functions/decidepage.dart';
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
+
   @override
   _SignInPageState createState() => _SignInPageState();
 }
@@ -18,7 +19,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isLoading = false;
-  bool _isLoginForm = true;
+  final bool _isLoginForm = true;
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _SignInPageState extends State<SignInPage> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((user) {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => VerifyCheckPage()));
+            MaterialPageRoute(builder: (context) => const VerifyCheckPage()));
       }).catchError((error) {
         print(error);
         Fluttertoast.showToast(
@@ -76,7 +77,7 @@ class _SignInPageState extends State<SignInPage> {
           prefs.setString('password', password);
 
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => VerifyCheckPage()));
+              MaterialPageRoute(builder: (context) => const VerifyCheckPage()));
         }).catchError((error) {
           setState(() {
             _isLoading = false;
@@ -108,8 +109,8 @@ class _SignInPageState extends State<SignInPage> {
           ),
           Center(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16.0),
-              padding: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
                 color: Colors.white.withOpacity(0.7), // set opacity here
@@ -118,7 +119,7 @@ class _SignInPageState extends State<SignInPage> {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
@@ -126,14 +127,14 @@ class _SignInPageState extends State<SignInPage> {
                 alignment: WrapAlignment.center,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Image.asset(
                       'assets/logo.png',
                       height: 100, // Set the height of the logo image
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                   ),
                   Form(
                     key: _formKey,
@@ -141,7 +142,7 @@ class _SignInPageState extends State<SignInPage> {
                       children: <Widget>[
                         TextFormField(
                           controller: _emailController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Email',
                             prefixIcon: Icon(Icons.email),
                           ),
@@ -152,10 +153,10 @@ class _SignInPageState extends State<SignInPage> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16.0),
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           controller: _passwordController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Password',
                             prefixIcon: Icon(Icons.lock),
                           ),
@@ -167,16 +168,16 @@ class _SignInPageState extends State<SignInPage> {
                             return null;
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         _isLoading
-                            ? CircularProgressIndicator()
+                            ? const CircularProgressIndicator()
                             : ElevatedButton(
-                                child: Text('Sign In'),
                                 onPressed: _submit,
+                                child: const Text('Sign In'),
                               ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20.0,
                         ),
                         TextButton(
@@ -186,13 +187,13 @@ class _SignInPageState extends State<SignInPage> {
                               PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation1, animation2) =>
-                                        ResetScreen(),
+                                        const ResetScreen(),
                                 transitionDuration: Duration.zero,
                                 reverseTransitionDuration: Duration.zero,
                               ),
                             );
                           },
-                          child: Text('Forgot password?'),
+                          child: const Text('Forgot password?'),
                         ),
                         TextButton(
                           onPressed: () {
@@ -207,7 +208,7 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                             );
                           },
-                          child: Text('Sign up'),
+                          child: const Text('Sign up'),
                         ),
                       ],
                     ),
